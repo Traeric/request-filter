@@ -1,43 +1,38 @@
 #include "module_context.h"
 #include "main.h"
 
+
 /*
-	创建主区块配置
-*/
-void *request_filter_create_main_conf(ngx_conf_t *cf)
+ * 为指令参数申请空间并赋予默认值
+ */
+void *ngx_http_request_filter_create_loc_conf(ngx_conf_t *cf)
 {
-	ngx_str_t *conf;
-	conf = ngx_pcalloc(cf->pool, sizeof(ngx_str_t));
+	request_filter_loc_conf_t *conf;
+	conf = ngx_pcalloc(cf->pool, sizeof(request_filter_loc_conf_t));
+	if (conf == NULL)
+	{
+		return NGX_CONF_ERROR;
+	}
+
 	return conf;
 }
 
 /*
-	postconfiguration处理函数
-*/
-static ngx_int_t request_filter_post_handler(ngx_http_request_t *r)
+ * 合并location配置到全局的loc_conf中
+ */
+char *ngx_http_request_filter_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 {
-	ngx_str_t *str = ngx_http_get_module_main_conf(r, request_filter);
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter前置处理函数 %V, uri: %V", str, &r->uri);
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "=================request filter前置处理函数执行结束==================");
-	return NGX_DECLINED;
+	request_filter_loc_conf_t *prev = parent;
+	request_filter_loc_conf_t *conf = child;
+
+	/* 默认3秒内 */
+	ngx_conf_merge_value(conf->limitTime, prev->limitTime, 3000);
+	/* 默认10次 */
+	ngx_conf_merge_value(conf->limitCount, prev->limitCount, 10);
+
+	return NGX_CONF_OK;
 }
 
-/*
-	注册postconfiguration处理函数
-*/
-ngx_int_t request_filter_post_method(ngx_conf_t *cf)
-{
-	ngx_http_handler_pt *h;
-	ngx_http_core_main_conf_t *cmcf;
 
-	cmcf = ngx_http_conf_get_module_main_conf(cf, ngx_http_core_module);
-	h = ngx_array_push(&cmcf->phases[NGX_HTTP_POST_READ_PHASE].handlers);
-
-	if (h == NULL) {
-		return NGX_ERROR;
-	}
-	*h = request_filter_post_handler;
-	return NGX_OK;
-}
 
 

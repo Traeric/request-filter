@@ -5,9 +5,9 @@
 #include <ngx_http.h>
 #include <ngx_config.h>
 
-extern void *request_filter_create_main_conf(ngx_conf_t *);
+extern void *ngx_http_request_filter_create_loc_conf(ngx_conf_t *);
 
-extern ngx_int_t request_filter_post_method(ngx_conf_t *);
+extern char *ngx_http_request_filter_merge_loc_conf(ngx_conf_t *, void *, void *);
 
 #endif
 

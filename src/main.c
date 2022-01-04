@@ -22,14 +22,17 @@ ngx_module_t request_filter = {
 
 // 模块信息
 ngx_http_module_t request_filter_ctx = {
+    NULL,       /* preconfiguration */
+    NULL,       /* postconfiguration */
+    /* 合并main配置 */
+    NULL,  /* create main configuration */
     NULL,
-    request_filter_post_method,       /* postconfiguration */
-    request_filter_create_main_conf,  /* create main configuration */
+    /* 合并server块配置 */
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL
+    /* 为location块配置分配内存 合并location块的配置 */
+    ngx_http_request_filter_create_loc_conf,
+    ngx_http_request_filter_merge_loc_conf
 };
 
 // 指令列表
@@ -43,10 +46,10 @@ ngx_command_t request_filter_commands[] = {
     */
     {
         ngx_string("request_filter_machine"),
-		NGX_HTTP_MAIN_CONF | NGX_CONF_NOARGS | NGX_CONF_TAKE123,
-		request_filter_machine,
-		NGX_HTTP_MAIN_CONF_OFFSET,
-		0,
+		NGX_HTTP_LOC_CONF | NGX_CONF_NOARGS | NGX_CONF_TAKE12,
+		request_filter_machine_init,
+		NGX_HTTP_LOC_CONF_OFFSET,
+		offsetof(request_filter_loc_conf_t, limitTime),
 		NULL
     },
     ngx_null_command,
