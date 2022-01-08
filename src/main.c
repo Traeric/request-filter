@@ -1,6 +1,6 @@
 #include "main.h"
 #include "module_context.h"
-#include "module_command.h"
+#include "machine_identify.h"
 
 
 // 模块入口

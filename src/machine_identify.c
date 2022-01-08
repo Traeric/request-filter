@@ -1,23 +1,6 @@
-#include "module_command.h"
+#include "machine_identify.h"
 #include "main.h"
 
-
-/*
- * 指令处理函数
- */
-static ngx_int_t request_filter_machine_handler(ngx_http_request_t *r)
-{
-	request_filter_loc_conf_t *args;
-
-	/* 获取参数 */
-	args = ngx_http_get_module_loc_conf(r, request_filter);
-
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "************=========**********");
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数1 %i ||", args->limitTime);
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数2 %i ||", args->limitCount);
-
-	return NGX_DECLINED;
-}
 
 static void set_machine_value_to_conf(ngx_conf_t *cf, ngx_command_t *cmd, void *conf, ngx_uint_t offsetLen)
 {
@@ -35,6 +18,8 @@ static void set_machine_value_to_conf(ngx_conf_t *cf, ngx_command_t *cmd, void *
 	}
 }
 
+static ngx_int_t request_filter_machine_handler(ngx_http_request_t *);
+
 /*
  * 设置处理函数
  */
@@ -50,3 +35,19 @@ char *request_filter_machine_init(ngx_conf_t *cf, ngx_command_t *cmd, void *conf
 	return NGX_CONF_OK;
 }
 
+/*
+ * 指令处理函数
+ */
+static ngx_int_t request_filter_machine_handler(ngx_http_request_t *r)
+{
+	request_filter_loc_conf_t *args;
+
+	/* 获取参数 */
+	args = ngx_http_get_module_loc_conf(r, request_filter);
+
+	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "************=========**********");
+	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数1 %i ||", args->limitTime);
+	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数2 %i ||", args->limitCount);
+
+	return NGX_DECLINED;
+}

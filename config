@@ -2,13 +2,14 @@ ngx_addon_name=request_filter
 have=NGX_STAT_STUB . auto/have
 
 HTTP_REQUEST_FILTER_SRCS=" \
-    $ngx_addon_dir/src/module_command.c             \
+    $ngx_addon_dir/src/machine_identify.c           \
     $ngx_addon_dir/src/module_context.c             \
     $ngx_addon_dir/src/main.c                       \
     "
 
 HTTP_REQUEST_FILTER_DEPS=" \
-    $ngx_addon_dir/src/module_command.h             \
+    $ngx_addon_dir/src/main.h                       \
+    $ngx_addon_dir/src/machine_identify.h           \
     $ngx_addon_dir/src/module_context.h             \
     "
 
