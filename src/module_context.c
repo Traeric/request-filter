@@ -13,6 +13,8 @@ void *ngx_http_request_filter_create_loc_conf(ngx_conf_t *cf)
 	{
 		return NGX_CONF_ERROR;
 	}
+	conf->limitTime = NGX_CONF_UNSET;
+	conf->limitCount = NGX_CONF_UNSET;
 
 	return conf;
 }

@@ -19,6 +19,21 @@ static ngx_int_t request_filter_machine_handler(ngx_http_request_t *r)
 	return NGX_DECLINED;
 }
 
+static void set_machine_value_to_conf(ngx_conf_t *cf, ngx_command_t *cmd, void *conf, ngx_uint_t offsetLen)
+{
+	char *p = conf;
+	ngx_int_t *np;
+	ngx_uint_t i;
+	ngx_str_t *value = cf->args->elts;
+	for (i = 1; i < cf->args->nelts; i++)
+	{
+		if (i - 1 >= offsetLen) {
+			break;
+		}
+		np = (ngx_int_t *) (p + cmd->offset + (i - 1) * sizeof(ngx_int_t));
+		*np = ngx_atoi(value[i].data, value[i].len);
+	}
+}
 
 /*
  * 设置处理函数
@@ -31,11 +46,7 @@ char *request_filter_machine_init(ngx_conf_t *cf, ngx_command_t *cmd, void *conf
 	/* 设置处理函数 */
 	clcf->handler = request_filter_machine_handler;
 	/* 设置参数 */
-	char *rv = ngx_conf_set_str_slot(cf, cmd, conf);
-	if (rv != NGX_CONF_OK)
-	{
-		return rv;
-	}
-
+	set_machine_value_to_conf(cf, cmd, conf, 2);
 	return NGX_CONF_OK;
 }
+

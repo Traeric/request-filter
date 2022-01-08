@@ -46,10 +46,10 @@ ngx_command_t request_filter_commands[] = {
     */
     {
         ngx_string("request_filter_machine"),
-		NGX_HTTP_LOC_CONF | NGX_CONF_NOARGS | NGX_CONF_TAKE12,
+		NGX_HTTP_LOC_CONF | NGX_CONF_TAKE2,
 		request_filter_machine_init,
 		NGX_HTTP_LOC_CONF_OFFSET,
-		offsetof(request_filter_loc_conf_t, limitTime),
+		0,
 		NULL
     },
     ngx_null_command,
