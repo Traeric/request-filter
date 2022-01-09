@@ -38,11 +38,7 @@ ngx_http_module_t request_filter_ctx = {
 // 指令列表
 ngx_command_t request_filter_commands[] = {
     /*
-    人机识别指令
-        mode1:
-            在指定时间内 如果一个ip连续请求指定次数 认为是机器
-        mode2:
-            在指定时间内 如果一个ip连续请求某一资源指定次数 认为是机器
+    人机识别指令: 在指定时间内 如果一个ip连续请求指定次数 认为是机器
     */
     {
         ngx_string("request_filter_machine"),

@@ -46,7 +46,7 @@ static ngx_int_t request_filter_machine_handler(ngx_http_request_t *r)
 	args = ngx_http_get_module_loc_conf(r, request_filter);
 
 	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "************=========**********");
-	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数1 %i ||", args->limitTime);
+	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "URI %V ||", &r->uri);
 	ngx_log_error(NGX_LOG_NOTICE, r->connection->log, 0, "request filter处理函数2 %i ||", args->limitCount);
 
 	return NGX_DECLINED;
